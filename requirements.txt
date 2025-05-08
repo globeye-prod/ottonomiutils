@@ -1,0 +1,4 @@
+numpy
+opencv-python
+onnxruntime-gpu
+typing-extensions>=4.0.0  # For enhanced typing support
