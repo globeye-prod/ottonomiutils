@@ -8,7 +8,7 @@ with open("requirements.txt", "r", encoding="utf-8") as fh:
 
 setup(
     name="ottonomiutils",
-    version="0.1.0",
+    version="0.1.1",
     author="OttonomiAI",
     # author_email="your.email@example.com",  # Update this
     description="A high-performance Python package for ONNX model inference with GPU acceleration support",
