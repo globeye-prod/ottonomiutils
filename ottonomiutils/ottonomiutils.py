@@ -63,6 +63,8 @@ class ONNXInferenceModel:
         conf_thresh: float = 0.5,
         input_name: str = "images",
         batch_size: int = 4,
+        providers: List[str] = ['TensorrtExecutionProvider', 'CUDAExecutionProvider', 'CPUExecutionProvider'],
+        class_name="N/A"
     ) -> None:
         """Initialize ONNX model with specified parameters.
         
@@ -79,14 +81,13 @@ class ONNXInferenceModel:
         """
         self.model: onnxruntime.InferenceSession = onnxruntime.InferenceSession(
             model_path,
-            providers=[
-                'TensorrtExecutionProvider', 'CUDAExecutionProvider', 'CPUExecutionProvider'
-            ],
+            providers=providers,
         )
         self.input_name: str = input_name
         self.img_size: int = img_size
         self.conf_thresh: float = conf_thresh
         self.batch_size: int = batch_size
+        self.class_name: str = class_name
         
         # Run warmup if using TensorRT provider
         if self.model.get_providers()[0] == 'TensorrtExecutionProvider':
@@ -152,7 +153,7 @@ class ONNXInferenceModel:
         all_detections: FrameResults = []
         for i in range(len(postprocess_result["xyxy"])):
             detection: Detection = [
-                "gun",  # label
+                self.class_name,  # label
                 postprocess_result["cls"][i],  # class id
                 postprocess_result["xyxy"][i],  # bounding box
                 postprocess_result["conf"][i],  # confidence score
